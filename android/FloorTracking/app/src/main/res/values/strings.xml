@@ -8,6 +8,15 @@
     <string name="ground_floor">지상층</string>
     <string name="middle_floor">중간층</string>
     <string name="basement_floor">지하층</string>
+    <string name="setting_align_floor">기준층 셋팅</string>
+
+    <string name="floor_info_modify">층별 정보 수정</string>
+    <string name="my_floor_position">내 층별 위치</string>
+    <string name="refresh">새로고침</string>
+
+    <string name="sea_level_pressure">해면기압</string>
+    <string name="reference_elevation">기준표고</string>
+    <string name="hectopascal">hpa</string>
 
     <string name="floor">층</string>
     <string name="meter">m</string>

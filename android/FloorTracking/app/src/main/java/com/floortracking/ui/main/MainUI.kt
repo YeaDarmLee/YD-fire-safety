@@ -12,13 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.floortracking.ui.components.CommonText
-import com.floortracking.ui.components.FTAppBar
 import com.floortracking.R
-import com.floortracking.ui.components.NumberOutLineTextField
+import com.floortracking.ui.components.*
 
 @Composable
-fun MainUI(titleName: String, labelText: String, placeHolderText: String) {
+fun MainUI(titleName: String, labelText: String, placeHolderText: String, settingAlignAction:  () -> Unit) {
     Scaffold() {
         Column {
             FTAppBar(name = titleName)
@@ -107,49 +105,16 @@ fun MainUI(titleName: String, labelText: String, placeHolderText: String) {
                 }
             }
 
-     /*       Row(
-                horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp),
+            Column(
+                modifier = Modifier.fillMaxSize().padding(bottom = 30.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom,
             ) {
-                val gap = 10
-                val height = 200
-                Column(
-                    verticalArrangement = Arrangement.SpaceAround,
-                    modifier = Modifier
-                        .height(height.dp),
-                ) {
-                    CommonText(text = "  ")
-                    CommonText(text = stringResource(id = R.string.ground_floor))
-                    CommonText(text = stringResource(id = R.string.middle_floor))
-                    CommonText(text = stringResource(id = R.string.basement_floor))
-                }
-                Column(
-                    verticalArrangement = Arrangement.SpaceAround,
-                    modifier = Modifier
-                        .height(height.dp),
-                ) {
-                    CommonText(text = stringResource(id = R.string.floor_number))
-                    val modifier = Modifier
-                        .height(20.dp)
-                        .width(40.dp)//.padding(top = 20.dp)
-                    OutLineTextField(labelText = "", placeHolderText = "", modifier = modifier)
-                    OutLineTextField(labelText = "", placeHolderText = "", modifier = modifier)
-                    OutLineTextField(labelText = "", placeHolderText = "", modifier = modifier)
-                }
-                Column() {
-                    //      CommonText(text = stringResource(id = R.string.floor_height))
-                }
+                CommonButton(text = stringResource(id = R.string.setting_align_floor), onClickAction = settingAlignAction)
             }
-            Column() {
-
-            }
-*/
 
         }
     }
-
 }
 
 @Composable
