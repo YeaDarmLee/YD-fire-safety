@@ -62,33 +62,6 @@ fun FloorUI(titleName: String, floorText: String, hpaText: String, meterText: St
                 }
 
             }
-/*
-            Box(contentAlignment= Alignment.Center,
-                modifier = Modifier
-                    .background(Color.Black, shape = CircleShape)
-                    .layout(){ measurable, constraints ->
-                        // Measure the composable
-                        val placeable = measurable.measure(constraints)
-
-                        //get the current max dimension to assign width=height
-                        val currentHeight = placeable.height
-                        val currentWidth = placeable.width
-                        val newDiameter = maxOf(currentHeight, currentWidth)
-
-                        //assign the dimension and the center position
-                        layout(newDiameter, newDiameter) {
-                            // Where the composable gets placed
-                            placeable.placeRelative((newDiameter-currentWidth)/2, (newDiameter-currentHeight)/2)
-                        }
-                    }) {
-
-                Text(
-                    text = "Hello World",
-                    textAlign = TextAlign.Center,
-                    color = Color.White,
-                    modifier = Modifier.padding(4.dp),
-                )
-            }*/
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -98,7 +71,6 @@ fun FloorUI(titleName: String, floorText: String, hpaText: String, meterText: St
             ) {
                 CommonButton(text = stringResource(id = R.string.refresh), onClickAction = settingAlignAction)
             }
-
         }
     }
 }

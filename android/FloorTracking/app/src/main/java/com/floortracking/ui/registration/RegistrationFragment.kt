@@ -1,4 +1,4 @@
-package com.floortracking.ui.main
+package com.floortracking.ui.registration
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +12,9 @@ import androidx.fragment.app.commit
 import com.floortracking.R
 import com.floortracking.ui.components.OneButtonPopup
 import com.floortracking.ui.floor.FloorFragment
-import com.floortracking.ui.registration.RegistrationFragment
 import com.floortracking.ui.theme.FloorTrackingTheme
 
-class MainFragment : Fragment() {
+class RegistrationFragment : Fragment() {
 
     private val showDialog = mutableStateOf(false)
     private val titleText = mutableStateOf("테스트합니다")
@@ -34,14 +33,14 @@ class MainFragment : Fragment() {
 
                 ) {
                     FloorTrackingTheme {
-                        MainUI(
-                            altitudeMeasurementAction = {
-                                startFloorFragment()
-                            },
+                        RegistrationUI(titleName = getString(R.string.scene_fire_register),
+                            labelText = getString(R.string.scene_fire_name),
+                            placeHolderText = getString(R.string.scene_fire_name),
                             settingAlignAction = {
                                 //showDialog.value = true
                                 //titleText.value = "호잇 둘리는 초능력 내친구"
-                                startRegistrationFragment()
+                                startFloorFragment()
+
                             })
                     }
                 }
@@ -52,15 +51,6 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun startRegistrationFragment() {
-        val fragment = RegistrationFragment()
-        val fragmentManager = requireActivity().supportFragmentManager
-        fragmentManager.commit {
-            addToBackStack(null)
-            setReorderingAllowed(true)
-            replace(R.id.nav_host_fragment, fragment, "registrationInfo")
-        }
-    }
     private fun startFloorFragment() {
         val fragment = FloorFragment()
         val fragmentManager = requireActivity().supportFragmentManager

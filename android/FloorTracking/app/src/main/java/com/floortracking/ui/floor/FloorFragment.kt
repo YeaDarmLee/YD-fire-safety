@@ -8,8 +8,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
 import com.floortracking.R
 import com.floortracking.ui.base.BaseFragment
-import com.floortracking.ui.components.OneButtonPopup
-import com.floortracking.ui.main.MainUI
 import com.floortracking.ui.theme.FloorTrackingTheme
 
 class FloorFragment: BaseFragment() {

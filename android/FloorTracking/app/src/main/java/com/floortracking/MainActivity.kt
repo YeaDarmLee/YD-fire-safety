@@ -12,6 +12,7 @@ import com.floortracking.databinding.ContentMainBinding
 import com.floortracking.fragment.AppbarFragment
 import com.floortracking.ui.base.BaseActivity
 import com.floortracking.ui.main.MainFragment
+import com.floortracking.ui.registration.RegistrationFragment
 import com.floortracking.ui.theme.FloorTrackingTheme
 
 class MainActivity : BaseActivity() {

@@ -2,6 +2,9 @@
     <string name="app_name">FloorTracking</string>
 
     <string name="scene_fire_register">화재현장 등록</string>
+    <string name="altitude_measurement">고도측정</string>
+    <string name="outside_condition">외부현황</string>
+
     <string name="scene_fire_name">화재현장명</string>
     <string name="floor_number">층수</string>
     <string name="floor_height">층고</string>

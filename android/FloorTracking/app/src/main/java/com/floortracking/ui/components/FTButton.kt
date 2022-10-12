@@ -12,7 +12,7 @@ fun CommonButton(
     modifier: Modifier = Modifier,
     onClickAction: () -> Unit = {/* Do something! */ }
 ) {
-    Button(onClick = onClickAction) {
+    Button(modifier = modifier, onClick = onClickAction) {
         Text(text = text, color = Color.White)
     }
 }

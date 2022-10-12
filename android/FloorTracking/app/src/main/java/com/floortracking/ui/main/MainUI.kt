@@ -16,103 +16,36 @@ import com.floortracking.R
 import com.floortracking.ui.components.*
 
 @Composable
-fun MainUI(titleName: String, labelText: String, placeHolderText: String, settingAlignAction:  () -> Unit) {
+fun MainUI(altitudeMeasurementAction:  () -> Unit, settingAlignAction:  () -> Unit) {
     Scaffold() {
         Column {
-            FTAppBar(name = titleName)
+            FTAppBar(name = stringResource(id = R.string.floor_info_modify))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                SimpleTextField(labelText = labelText, placeHolderText = placeHolderText)
+                val btnHeight = 100.dp
+                CommonSpacerVertical(100.dp)
+                CommonButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height = btnHeight)
+                        .padding(horizontal = 20.dp),
+                    text = stringResource(id = R.string.altitude_measurement),
+                    onClickAction = altitudeMeasurementAction
+                )
+                CommonSpacerVertical(10.dp)
+                CommonButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(btnHeight)
+                        .padding(horizontal = 20.dp),
+                    text = stringResource(id = R.string.setting_align_floor),
+                    onClickAction = settingAlignAction
+                )
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 20.dp).height(250.dp),
-            ) {
-                val floorTextmodifier = Modifier.width(50.dp)
-                val textFieldmodifier = Modifier
-                    .height(40.dp)
-                    .width(60.dp)
-                val textFieldLayoutWidth = 70
-                Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),) {
-
-                    CommonText(text = "  ", modifier = floorTextmodifier)
-                    CommonText(text = stringResource(id = R.string.floor_number), textFieldmodifier.width(textFieldLayoutWidth.dp))
-                    CommonText(text = stringResource(id = R.string.floor_height), textFieldmodifier.width(textFieldLayoutWidth.dp))
-                }
-                Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),) {
-                    CommonText(text = stringResource(id = R.string.ground_floor), modifier = floorTextmodifier)
-                    Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
-                        verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "a", placeHolderText = "1", modifier = textFieldmodifier)
-                        CommonText(text = stringResource(id = R.string.floor), modifier = Modifier.padding(start = 2.dp))
-
-                    }
-                    Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
-                        verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
-                        CommonText(text = stringResource(id = R.string.meter), modifier = Modifier.padding(start = 2.dp))
-                    }
-                }
-
-                Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),) {
-                    CommonText(text = stringResource(id = R.string.middle_floor), modifier = floorTextmodifier)
-                    Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
-                        verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
-                        CommonText(text = stringResource(id = R.string.floor), modifier = Modifier.padding(start = 2.dp))
-
-                    }
-                    Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
-                        verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
-                        CommonText(text = stringResource(id = R.string.meter), modifier = Modifier.padding(start = 2.dp))
-                    }
-                }
-
-                Row(horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),) {
-                    CommonText(text = stringResource(id = R.string.basement_floor), modifier = floorTextmodifier)
-                    Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
-                        verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
-                        CommonText(text = stringResource(id = R.string.floor), modifier = Modifier.padding(start = 2.dp))
-
-                    }
-                    Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
-                        verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
-                        CommonText(text = stringResource(id = R.string.meter), modifier = Modifier.padding(start = 2.dp))
-                    }
-                }
-            }
-
-            Column(
-                modifier = Modifier.fillMaxSize().padding(bottom = 30.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
-            ) {
-                CommonButton(text = stringResource(id = R.string.setting_align_floor), onClickAction = settingAlignAction)
-            }
-
         }
     }
 }
