@@ -1,6 +1,7 @@
 package com.floortracking.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,17 +9,27 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
+import androidx.lifecycle.viewModelScope
 import com.floortracking.R
 import com.floortracking.ui.components.OneButtonPopup
 import com.floortracking.ui.floor.FloorFragment
 import com.floortracking.ui.registration.RegistrationFragment
 import com.floortracking.ui.theme.FloorTrackingTheme
+import com.floortracking.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private val showDialog = mutableStateOf(false)
     private val titleText = mutableStateOf("테스트합니다")
+
+    private val mainViewModel: MainViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,14 +50,13 @@ class MainFragment : Fragment() {
                                 startFloorFragment()
                             },
                             settingAlignAction = {
-                                //showDialog.value = true
-                                //titleText.value = "호잇 둘리는 초능력 내친구"
+                                requestSeaLevel()
                                 startRegistrationFragment()
                             })
                     }
                 }
                 if (showDialog.value) {
-                    OneButtonPopup(onDismiss = {})
+                    OneButtonPopup("",onDismiss = {})
                 }
             }
         }
@@ -70,6 +80,16 @@ class MainFragment : Fragment() {
             replace(R.id.nav_host_fragment, fragment, "floorInfo")
         }
     }
+
+    private fun requestSeaLevel() {
+        mainViewModel.viewModelScope.launch(Dispatchers.IO) {
+            mainViewModel.requestSeaLevel(44.34f, 10.99f).collect {
+                Log.d("test" , "$it")
+            }
+        }
+    }
+
+
 }
 /*
 @Composable

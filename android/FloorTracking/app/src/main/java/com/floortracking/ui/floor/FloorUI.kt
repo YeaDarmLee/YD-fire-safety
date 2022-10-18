@@ -62,6 +62,7 @@ fun FloorUI(titleName: String, floorText: String, hpaText: String, meterText: St
                 }
 
             }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -71,6 +72,7 @@ fun FloorUI(titleName: String, floorText: String, hpaText: String, meterText: St
             ) {
                 CommonButton(text = stringResource(id = R.string.refresh), onClickAction = settingAlignAction)
             }
+
         }
     }
 }

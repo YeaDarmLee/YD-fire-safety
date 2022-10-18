@@ -12,11 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
 import com.floortracking.R
 import com.floortracking.ui.components.*
 
 @Composable
-fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String, settingAlignAction:  () -> Unit) {
+fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String,
+                   textFieldValue: MutableLiveData<String>, settingAlignAction:  () -> Unit) {
     Scaffold() {
         Column {
             FTAppBar(name = titleName)
@@ -26,7 +28,7 @@ fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String
                     .padding(vertical = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                SimpleTextField(labelText = labelText, placeHolderText = placeHolderText)
+                SimpleTextField(textFieldValue = textFieldValue, labelText = labelText, placeHolderText = placeHolderText)
             }
             Column(
                 modifier = Modifier
@@ -118,12 +120,13 @@ fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String
 }
 
 @Composable
-fun SimpleTextField(labelText: String, placeHolderText: String) {
+fun SimpleTextField(textFieldValue: MutableLiveData<String>, labelText: String, placeHolderText: String) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     TextField(
         value = text,
         onValueChange = { newText ->
             text = newText
+            textFieldValue.value = text.text
         },
         label = { Text(text = labelText) },
         placeholder = { Text(text = placeHolderText) },

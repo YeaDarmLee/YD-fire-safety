@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FloorTracking</string>
 
+    <string name="openweatherkey">936ec179727ae4e27dce1488a3970815</string>
     <string name="scene_fire_register">화재현장 등록</string>
     <string name="altitude_measurement">고도측정</string>
     <string name="outside_condition">외부현황</string>
@@ -23,4 +24,9 @@
 
     <string name="floor">층</string>
     <string name="meter">m</string>
+
+
+    <string name="gps_request_permissions_alert">앱을 실행하려면 위치 접근 권한이 필요합니다.\n위치 설정을 수정하시겠습니까?</string>
+    <string name="confirmation">확인</string>
+    <string name="cancel">취소</string>
 </resources>

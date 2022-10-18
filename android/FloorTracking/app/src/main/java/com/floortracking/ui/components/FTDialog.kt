@@ -7,12 +7,12 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 
 @Composable
-fun OneButtonPopup(onDismiss: () -> Unit) {
+fun OneButtonPopup(text: String, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         text = {
             Text(
-                text = "Functionality not available \uD83D\uDE48",
+                text = text,//"Functionality not available \uD83D\uDE48",
                 style = MaterialTheme.typography.body1
             )
         },

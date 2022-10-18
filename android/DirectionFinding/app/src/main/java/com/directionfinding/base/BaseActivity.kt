@@ -1,4 +1,4 @@
-package com.directionfinding.ui.base
+package com.directionfinding.base
 
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity

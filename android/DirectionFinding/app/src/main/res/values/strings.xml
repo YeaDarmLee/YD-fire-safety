@@ -2,6 +2,10 @@
     <string name="app_name">DirectionFinding</string>
 
     <string name="scene_fire_register">화재현장 등록</string>
+    <string name="direction_finding">방향탐지</string>
+    <string name="registration_beacon">비콘등록</string>
+
+
     <string name="altitude_measurement">고도측정</string>
     <string name="outside_condition">외부현황</string>
 

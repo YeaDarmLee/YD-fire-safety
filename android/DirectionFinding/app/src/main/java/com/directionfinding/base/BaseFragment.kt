@@ -1,4 +1,4 @@
-package com.floortracking.ui.base
+package com.directionfinding.base
 
 import android.os.Bundle
 import android.view.MenuItem

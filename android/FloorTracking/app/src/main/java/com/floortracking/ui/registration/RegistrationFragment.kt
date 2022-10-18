@@ -9,13 +9,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import com.floortracking.R
 import com.floortracking.ui.components.OneButtonPopup
 import com.floortracking.ui.floor.FloorFragment
 import com.floortracking.ui.theme.FloorTrackingTheme
+import com.floortracking.viewmodel.FloorViewModel
+import com.floortracking.viewmodel.RegistrationViewModel
 
 class RegistrationFragment : Fragment() {
 
+    private val viewModel: RegistrationViewModel by viewModels()
     private val showDialog = mutableStateOf(false)
     private val titleText = mutableStateOf("테스트합니다")
     override fun onCreateView(
@@ -36,16 +40,17 @@ class RegistrationFragment : Fragment() {
                         RegistrationUI(titleName = getString(R.string.scene_fire_register),
                             labelText = getString(R.string.scene_fire_name),
                             placeHolderText = getString(R.string.scene_fire_name),
+                            textFieldValue = viewModel.sceneFireName,
                             settingAlignAction = {
-                                //showDialog.value = true
+                                showDialog.value = true
                                 //titleText.value = "호잇 둘리는 초능력 내친구"
-                                startFloorFragment()
+                               // startFloorFragment()
 
                             })
                     }
                 }
                 if (showDialog.value) {
-                    OneButtonPopup(onDismiss = {})
+                    OneButtonPopup(viewModel.sceneFireName.value?:"", onDismiss = {})
                 }
             }
         }

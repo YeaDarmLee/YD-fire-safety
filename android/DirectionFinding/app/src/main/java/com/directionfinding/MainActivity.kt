@@ -7,8 +7,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidViewBinding
+import com.directionfinding.base.BaseActivity
 import com.directionfinding.databinding.ContentMainBinding
-import com.directionfinding.ui.base.BaseActivity
 import com.directionfinding.ui.main.MainFragment
 import com.directionfinding.ui.theme.DirectionFindingTheme
 
@@ -23,7 +23,9 @@ class MainActivity : BaseActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    AndroidViewBinding(ContentMainBinding::inflate)
+                    AndroidViewBinding(ContentMainBinding::inflate) {
+                        initFragment()
+                    }
                 }
             }
         }
