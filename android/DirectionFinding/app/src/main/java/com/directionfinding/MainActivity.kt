@@ -1,6 +1,7 @@
 package com.directionfinding
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -24,6 +25,7 @@ class MainActivity : BaseActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     AndroidViewBinding(ContentMainBinding::inflate) {
+                        Log.d("tt","tttttttt")
                         initFragment()
                     }
                 }

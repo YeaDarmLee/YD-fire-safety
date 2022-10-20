@@ -16,7 +16,7 @@ import com.floortracking.R
 import com.floortracking.ui.components.*
 
 @Composable
-fun MainUI(altitudeMeasurementAction:  () -> Unit, settingAlignAction:  () -> Unit) {
+fun MainUI(altitudeMeasurementAction:  () -> Unit, settingAlignAction:  () -> Unit, altitudeBtnEnabled: Boolean) {
     Scaffold() {
         Column {
             FTAppBar(name = stringResource(id = R.string.floor_info_modify))
@@ -34,7 +34,8 @@ fun MainUI(altitudeMeasurementAction:  () -> Unit, settingAlignAction:  () -> Un
                         .height(height = btnHeight)
                         .padding(horizontal = 20.dp),
                     text = stringResource(id = R.string.altitude_measurement),
-                    onClickAction = altitudeMeasurementAction
+                    onClickAction = altitudeMeasurementAction,
+                    enabled = altitudeBtnEnabled
                 )
                 CommonSpacerVertical(10.dp)
                 CommonButton(

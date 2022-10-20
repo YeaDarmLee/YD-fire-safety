@@ -1,5 +1,10 @@
 package com.floortracking.ui.main
 
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,17 +18,23 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.lifecycle.viewModelScope
 import com.floortracking.R
+import com.floortracking.api.ApiResponse
 import com.floortracking.ui.components.OneButtonPopup
 import com.floortracking.ui.floor.FloorFragment
 import com.floortracking.ui.registration.RegistrationFragment
 import com.floortracking.ui.theme.FloorTrackingTheme
+import com.floortracking.util.AppPreferences
 import com.floortracking.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), SensorEventListener {
+
+    @Inject
+    lateinit var appPreferences: AppPreferences
 
     private val showDialog = mutableStateOf(false)
     private val titleText = mutableStateOf("테스트합니다")
@@ -35,6 +46,10 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("test", "onCreateView")
+        initSettings()
+        requestSeaLevel()
+        initPressure()
         return ComposeView(inflater.context).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -50,9 +65,8 @@ class MainFragment : Fragment() {
                                 startFloorFragment()
                             },
                             settingAlignAction = {
-                                requestSeaLevel()
                                 startRegistrationFragment()
-                            })
+                            }, mainViewModel.altitudeEnabled.value)
                     }
                 }
                 if (showDialog.value) {
@@ -62,6 +76,11 @@ class MainFragment : Fragment() {
         }
     }
 
+
+    override fun onResume() {
+        mainViewModel.altitudeEnabled.value = appPreferences.isValidData()
+        super.onResume()
+    }
     private fun startRegistrationFragment() {
         val fragment = RegistrationFragment()
         val fragmentManager = requireActivity().supportFragmentManager
@@ -80,21 +99,44 @@ class MainFragment : Fragment() {
             replace(R.id.nav_host_fragment, fragment, "floorInfo")
         }
     }
-
+    private fun initSettings() {
+        mainViewModel.sceneFireName.value = appPreferences.sceneFireName
+        mainViewModel.groundFloor.value = appPreferences.groundFloor.toString()
+        mainViewModel.groundHeight.value = appPreferences.groundHeight.toString()
+        mainViewModel.middleFloor.value = appPreferences.middleFloor.toString()
+        mainViewModel.middleHeight.value = appPreferences.middleHeight.toString()
+        mainViewModel.underGroundFloor.value = appPreferences.underGroundFloor.toString()
+        mainViewModel.underGroundHeight.value = appPreferences.underGroundHeight.toString()
+    }
     private fun requestSeaLevel() {
+       // Log.d("test" , "${it.value}")
         mainViewModel.viewModelScope.launch(Dispatchers.IO) {
-            mainViewModel.requestSeaLevel(44.34f, 10.99f).collect {
-                Log.d("test" , "$it")
+            mainViewModel.requestSeaLevel(mainViewModel.location.value?.latitude?.toFloat()?:37.566f, mainViewModel.location.value?.longitude?.toFloat()?:126.97f).collect {
+                if (it is ApiResponse.Success) {
+                    mainViewModel.seaLevel.value = it.value
+                    Log.d("test" , "${it.value}")
+                }
             }
         }
     }
 
-
-}
-/*
-@Composable
-fun showDialog() {
-    OneButtonPopup {
+    private fun initPressure() {
+        val sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)?.run {
+            sensorManager.registerListener(this@MainFragment, this, SensorManager.SENSOR_DELAY_UI)
+        }
+    }
+    var test = false
+    override fun onSensorChanged(event: SensorEvent) {
+    //    if (test == false) {
+           Log.d("pressure", "${event.values[0]}")
+    //   }
+     //   test = true
+        mainViewModel.pressure.value = event.values[0]
 
     }
-}*/
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
+    }
+
+}

@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.DialogProperties
 
 @Composable
 fun OneButtonPopup(text: String, onDismiss: () -> Unit) {
@@ -20,6 +21,9 @@ fun OneButtonPopup(text: String, onDismiss: () -> Unit) {
             TextButton(onClick = onDismiss) {
                 Text(text = "CLOSE")
             }
-        }
+        },
+        properties = DialogProperties(
+
+        )
     )
 }

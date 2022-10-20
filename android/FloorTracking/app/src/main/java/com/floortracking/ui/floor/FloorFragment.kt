@@ -22,29 +22,34 @@ import com.floortracking.R
 import com.floortracking.api.ApiResponse
 import com.floortracking.ui.base.BaseFragment
 import com.floortracking.ui.theme.FloorTrackingTheme
+import com.floortracking.util.AppPreferences
+import com.floortracking.util.MathUtils
 import com.floortracking.viewmodel.FloorViewModel
 import com.floortracking.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.math.pow
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
-class FloorFragment: BaseFragment(), SensorEventListener {
+class FloorFragment: BaseFragment() {
+
+    @Inject
+    lateinit var appPreferences: AppPreferences
 
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private val viewModel: FloorViewModel by viewModels()
 
-    var test = 1000
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        initPressure()
-        requestSeaLevel()
+        initData()
         altitudeLaunch()
         return ComposeView(inflater.context).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -58,10 +63,10 @@ class FloorFragment: BaseFragment(), SensorEventListener {
                     FloorTrackingTheme {
                         FloorUI(titleName = getString(R.string.floor_info_modify),
                             floorText = "${viewModel.currentFloor.value}F",
-                            hpaText = "${viewModel.seaLevel.value}",
-                            meterText = "${viewModel.altitude.value}",
+                            hpaText = "${mainViewModel.seaLevel.value}",
+                            meterText = "${viewModel.altitude.value.toInt()}",
                             settingAlignAction = {
-                                calAltitude()
+                            //    calAltitude()
                                 //showDialog.value = true
                                 //titleText.value = "호잇 둘리는 초능력 내친구"
 
@@ -71,53 +76,56 @@ class FloorFragment: BaseFragment(), SensorEventListener {
             }
         }
     }
+    private fun initData() {
+        viewModel.floorHeight.value = appPreferences.groundHeight
+        viewModel.alignAltitude.value = appPreferences.alignAltitude
 
-    private fun initPressure() {
-        val sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)?.run {
-            sensorManager.registerListener(this@FloorFragment, this, SensorManager.SENSOR_DELAY_UI)
-        }
-    }
-    private fun requestSeaLevel() {
-        mainViewModel.viewModelScope.launch(Dispatchers.IO) {
-            mainViewModel.requestSeaLevel(mainViewModel.location.value?.latitude?.toFloat() ?: 0.0f, mainViewModel.location.value?.longitude?.toFloat() ?: 0.0f).collect {
-                if (it is ApiResponse.Success) {
-                    viewModel.seaLevel.value = it.value
-                    Log.d("test" , "${it.value}")
-                }
-
-            }
-        }
-    }
-
-    private fun calAltitude() {
-        val p0 = viewModel.seaLevel.value.toFloat()
-        val p = viewModel.pressure.value
-
-        if (p0 <= 0 || p <= 0) {
-            return
-        }
-        viewModel.altitude.value =  (44300*(1 - (p / p0).toDouble().pow(1.0 / 5.255))).toInt()
-        Log.d("prepre","${viewModel.altitude.value}")
+        viewModel.groundFloor.value = appPreferences.groundFloor
+        viewModel.groundHeight.value = appPreferences.groundHeight
+        viewModel.middleFloor.value = appPreferences.middleFloor
+        viewModel.middleHeight.value = appPreferences.middleHeight
+        viewModel.underGroundFloor.value = appPreferences.underGroundFloor
+        viewModel.underGroundHeight.value = appPreferences.underGroundHeight
 
     }
-
     private fun altitudeLaunch() {
         lifecycleScope.launch {
             while (true) {
                 delay(1000)
-                calAltitude()
+                val altitude = MathUtils.calAltitude(mainViewModel.seaLevel.value.toFloat(), mainViewModel.pressure.value)
+                viewModel.altitude.value =  altitude
+                Log.d("altitude", "${viewModel.altitude.value}, ${viewModel.altitude.value.toInt()}")
+            //    viewModel.floorHeight.value?.run {
+                    val diffHeight = altitude - (viewModel.alignAltitude.value?: 0f)
+
+                    if (diffHeight < 0) {
+                        viewModel.underGroundHeight.value?.run {
+                            val floor = (diffHeight / this).roundToInt()
+                            if (floor < 0) {
+                                viewModel.currentFloor.value =  floor
+                            } else {
+                                viewModel.currentFloor.value = 1 + floor
+                            }
+                        }
+
+                    } else {
+
+                        val middleTotalHeight = (viewModel.middleHeight.value?:0f) * (viewModel.middleFloor.value?:0)
+                        if (diffHeight > middleTotalHeight) {
+                            viewModel.groundHeight.value?.run {
+                                viewModel.currentFloor.value = (viewModel.middleFloor.value?:0) + (((diffHeight - middleTotalHeight) / this).roundToInt())
+                            }
+                        } else {
+                            viewModel.middleHeight.value?.run {
+                                viewModel.currentFloor.value = 1 + (diffHeight / this).roundToInt()
+                            }
+                        }
+
+                    }
+            //        viewModel.currentFloor.value = 1 + (diffHeight / this).toInt()
+            //    }
             }
         }
-    }
-    override fun onSensorChanged(event: SensorEvent) {
-        Log.d("pressure" ,"${event.values[0]}")
-        viewModel.pressure.value = event.values[0]
-
-    }
-
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-
     }
 
     override fun onDetach() {

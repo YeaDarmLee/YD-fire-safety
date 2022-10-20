@@ -1,16 +1,11 @@
 package com.floortracking.ui.registration
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import com.floortracking.R
@@ -18,7 +13,14 @@ import com.floortracking.ui.components.*
 
 @Composable
 fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String,
-                   textFieldValue: MutableLiveData<String>, settingAlignAction:  () -> Unit) {
+                   textFieldValue: MutableLiveData<String>,
+                   groundFloorValue: MutableLiveData<String>,
+                   groundHeightValue: MutableLiveData<String>,
+                   middleFloorValue: MutableLiveData<String>,
+                   middleHeightValue: MutableLiveData<String>,
+                   underGroundFloorValue: MutableLiveData<String>,
+                   underGroundHeightValue: MutableLiveData<String>,
+                   settingAlignAction:  () -> Unit) {
     Scaffold() {
         Column {
             FTAppBar(name = titleName)
@@ -57,13 +59,13 @@ fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String
                     CommonText(text = stringResource(id = R.string.ground_floor), modifier = floorTextmodifier)
                     Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
                         verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "a", placeHolderText = "1", modifier = textFieldmodifier)
+                        FloorInputTextField(textFieldValue = groundFloorValue, labelText = "a", placeHolderText = "1", modifier = textFieldmodifier)
                         CommonText(text = stringResource(id = R.string.floor), modifier = Modifier.padding(start = 2.dp))
 
                     }
                     Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
                         verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
+                        FloorHeightInputTextField(textFieldValue = groundHeightValue, labelText = "", placeHolderText = "", modifier = textFieldmodifier)
                         CommonText(text = stringResource(id = R.string.meter), modifier = Modifier.padding(start = 2.dp))
                     }
                 }
@@ -76,13 +78,13 @@ fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String
                     CommonText(text = stringResource(id = R.string.middle_floor), modifier = floorTextmodifier)
                     Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
                         verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
+                        FloorInputTextField(textFieldValue = middleFloorValue, labelText = "", placeHolderText = "", modifier = textFieldmodifier)
                         CommonText(text = stringResource(id = R.string.floor), modifier = Modifier.padding(start = 2.dp))
 
                     }
                     Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
                         verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
+                        FloorHeightInputTextField(textFieldValue = middleHeightValue, labelText = "", placeHolderText = "", modifier = textFieldmodifier)
                         CommonText(text = stringResource(id = R.string.meter), modifier = Modifier.padding(start = 2.dp))
                     }
                 }
@@ -95,13 +97,13 @@ fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String
                     CommonText(text = stringResource(id = R.string.basement_floor), modifier = floorTextmodifier)
                     Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
                         verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
+                        FloorInputTextField(textFieldValue = underGroundFloorValue, labelText = "", placeHolderText = "", modifier = textFieldmodifier)
                         CommonText(text = stringResource(id = R.string.floor), modifier = Modifier.padding(start = 2.dp))
 
                     }
                     Row(modifier = Modifier.width(textFieldLayoutWidth.dp),
                         verticalAlignment = Alignment.CenterVertically,) {
-                        NumberOutLineTextField(labelText = "", placeHolderText = "", modifier = textFieldmodifier)
+                        FloorHeightInputTextField(textFieldValue = underGroundHeightValue, labelText = "", placeHolderText = "", modifier = textFieldmodifier)
                         CommonText(text = stringResource(id = R.string.meter), modifier = Modifier.padding(start = 2.dp))
                     }
                 }
@@ -117,30 +119,4 @@ fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String
 
         }
     }
-}
-
-@Composable
-fun SimpleTextField(textFieldValue: MutableLiveData<String>, labelText: String, placeHolderText: String) {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    TextField(
-        value = text,
-        onValueChange = { newText ->
-            text = newText
-            textFieldValue.value = text.text
-        },
-        label = { Text(text = labelText) },
-        placeholder = { Text(text = placeHolderText) },
-        singleLine = true,
-        keyboardActions = KeyboardActions(onDone = {
-            Log.d("keyboardAction", "onDone")
-        }),
-    )
-}
-
-/*
-*/
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
 }

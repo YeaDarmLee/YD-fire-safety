@@ -29,6 +29,7 @@ import com.floortracking.ui.theme.FloorTrackingTheme
 import com.floortracking.viewmodel.MainViewModel
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -37,14 +38,18 @@ class MainActivity : BaseActivity() {
     private lateinit var locationRequest: LocationRequest                               // 위치 요청할 때 넘겨주는 데이터에 관한 객체
     private lateinit var locationCallback: HomeLocationCallBack                         // 위치 확인되고 호출되는 객체
 
-    private val GPS_REQUEST_CODE = 1000                                                 // gps에 관한 권한 요청 코드(번호)
-    private val GPS_REQUEST_INTERVAL = 5000                                            // 위치를 갱신하는데 필요한 시간 <밀리초 기준>
-    private val GPS_REQUEST_FASTEST_INTERVAL = 5000                                     // 다른 앱에서 위치를 갱신했을 때 그 정보를 가져오는 시간 <밀리초 기준>
+    private val GPS_REQUEST_CODE =
+        1000                                                 // gps에 관한 권한 요청 코드(번호)
+    private val GPS_REQUEST_INTERVAL =
+        5000                                            // 위치를 갱신하는데 필요한 시간 <밀리초 기준>
+    private val GPS_REQUEST_FASTEST_INTERVAL =
+        5000                                     // 다른 앱에서 위치를 갱신했을 때 그 정보를 가져오는 시간 <밀리초 기준>
 
     private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("test", "onCreate()")
         initLocation()
         setContentView(
             ComposeView(this).apply {
@@ -56,28 +61,42 @@ class MainActivity : BaseActivity() {
                             color = MaterialTheme.colors.background
                         )
                         {
+                            Log.d("test", "asfdsfafsasfd")
                             AndroidViewBinding(ContentMainBinding::inflate) {
-                           //     appBarFragment()
+                                //     appBarFragment()
+                                Log.d("test", "initFragment")
                                 initFragment()
                             }
-                            /*ToolbarWithTitle(name = "Toolbar With Title")
-                            Column {
-                                CompositionLocalProvider(LocalContentColor provides Color.Red) {
-                                    Greeting("Android")
-                                }
-                                Greeting("Android BaboBabo")
-                            }*/
-
-
                         }
 
                     }
                 }
             }
         )
+
     }
 
     private fun initFragment() {
+        Log.d("toint","${(0.1).roundToInt()}")
+        Log.d("toint","${(0.2).roundToInt()}")
+        Log.d("toint","${(0.3).roundToInt()}")
+        Log.d("toint","${(0.4).roundToInt()}")
+        Log.d("toint","${(0.5).roundToInt()}")
+        Log.d("toint","${(0.6).roundToInt()}")
+        Log.d("toint","${(0.7).roundToInt()}")
+        Log.d("toint","${(0.8).roundToInt()}")
+        Log.d("toint","${(0.9).roundToInt()}")
+        Log.d("toint","${(-0.1).roundToInt()}")
+        Log.d("toint","${(-0.2).roundToInt()}")
+        Log.d("toint","${(-0.3).roundToInt()}")
+        Log.d("toint","${(-0.4).roundToInt()}")
+        Log.d("toint","${(-0.5).roundToInt()}")
+        Log.d("toint","${(-0.6).roundToInt()}")
+        Log.d("toint","${(-0.7).roundToInt()}")
+        Log.d("toint","${(-0.8).roundToInt()}")
+        Log.d("toint","${(-0.9).roundToInt()}")
+        Log.d("toint","${(-1.0).roundToInt()}")
+
         val fragment = MainFragment()
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit()
@@ -88,31 +107,36 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit()
     }
 
-    private fun initLocation(){
+    private fun initLocation() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback = HomeLocationCallBack()
         locationRequest = LocationRequest()
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY               // 가장 정확한 위치를 요청한다,
-        locationRequest.interval = GPS_REQUEST_INTERVAL.toLong()                        // 위치를 갱신하는데 필요한 시간 <밀리초 기준>
+        locationRequest.priority =
+            LocationRequest.PRIORITY_HIGH_ACCURACY               // 가장 정확한 위치를 요청한다,
+        locationRequest.interval =
+            GPS_REQUEST_INTERVAL.toLong()                        // 위치를 갱신하는데 필요한 시간 <밀리초 기준>
         locationRequest.fastestInterval = GPS_REQUEST_FASTEST_INTERVAL.toLong()
 
         // It's a run-time permission check
         // 거부됐으면 showPermissionInfoDialog(알림)메소드를 호출, 승인됐으면 addLocationListener(위치 요청)메소드를 호출
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkPermission(cancel= {
+            checkPermission(cancel = {
                 showPermissionInfoDialog()
-            }, ok= {
+            }, ok = {
                 addLocationListener()
             })
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun checkPermission(cancel:()->Unit, ok:()->Unit) {
+    private fun checkPermission(cancel: () -> Unit, ok: () -> Unit) {
         // 앱에 GPS이용하는 권한이 없을 때
         // <앱을 처음 실행하거나, 사용자가 이전에 권한 허용을 안 했을 때 성립>
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {  // <PERMISSION_DENIED가 반환됨>
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {  // <PERMISSION_DENIED가 반환됨>
             // 이전에 사용자가 앱 권한을 허용하지 않았을 때 -> 왜 허용해야되는지 알람을 띄움
             // shouldShowRequestPermissionRationale메소드는 이전에 사용자가 앱 권한을 허용하지 않았을 때 ture를 반환함
             if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -131,12 +155,17 @@ class MainActivity : BaseActivity() {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), GPS_REQUEST_CODE)
         }
     }
+
     // 사용자가 권한 요청<허용,비허용>한 후에 이 메소드가 호출됨
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             // (gps 사용에 대한 사용자의 요청)일 때
-            GPS_REQUEST_CODE-> {
+            GPS_REQUEST_CODE -> {
                 // 요청이 허용일 때
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     addLocationListener()
@@ -147,22 +176,27 @@ class MainActivity : BaseActivity() {
             }
         }
     }
+
     // 위치 요청 메소드
     @SuppressLint("MissingPermission")
-    private fun addLocationListener(){
+    private fun addLocationListener() {
         // 위치 정보 요청
         // (정보 요청할 때 넘겨줄 데이터)에 관한 객체, 위치 갱신되면 호출되는 콜백, 특정 스레드 지정(별 일 없으니 null)
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,null)
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
     // 사용자가 이전에 권한을 거부했을 때 호출된다.
-    private fun showPermissionInfoDialog(){
+    private fun showPermissionInfoDialog() {
         android.app.AlertDialog.Builder(this).run {
-            setTitle(getString(R.string.confirmation)).setMessage(getString(
-                R.string.gps_request_permissions_alert))
+            setTitle(getString(R.string.confirmation)).setMessage(
+                getString(
+                    R.string.gps_request_permissions_alert
+                )
+            )
                 .setPositiveButton(R.string.confirmation) { _, _ ->
                     // 권한 요청
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.parse("package:" + this@MainActivity.packageName))
+                    val intent =
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.parse("package:" + this@MainActivity.packageName))
                     startActivity(intent)
                 }.setNegativeButton(R.string.cancel) { _, _ ->
                     Toast.makeText(this@MainActivity, "권힌이 거부 되었습니다.", Toast.LENGTH_SHORT).show()
@@ -173,19 +207,18 @@ class MainActivity : BaseActivity() {
     }
 
     // 위치 정보를 찾고 나서 인스턴스화되는 클래스
-    inner class HomeLocationCallBack: LocationCallback(){
+    inner class HomeLocationCallBack : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             super.onLocationResult(locationResult)
 
             val location = locationResult?.lastLocation
-            location?.run{
-                Log.d("myLocation","$latitude, $longitude")
+            location?.run {
+                Log.d("myLocation", "$latitude, $longitude")
                 mainViewModel.location.postValue(this)
             }
         }
     }
 }
-
 
 
 @Composable
