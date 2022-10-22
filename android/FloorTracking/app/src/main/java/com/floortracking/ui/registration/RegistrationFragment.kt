@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
@@ -59,9 +60,14 @@ class RegistrationFragment : Fragment() {
                             middleHeightValue = mainViewModel.middleHeight,
                             underGroundFloorValue = mainViewModel.underGroundFloor,
                             underGroundHeightValue = mainViewModel.underGroundHeight,
+                            onBackClick = {
+                                requireActivity().onBackPressed()
+                            },
                             settingAlignAction = {
                              //   showDialog.value = true
                                 saveSettings()
+                                showToast()
+                                startFloorFragment()
                             })
                     }
                 }
@@ -82,9 +88,13 @@ class RegistrationFragment : Fragment() {
         appPreferences.underGroundFloor =  MathUtils.parseInt(mainViewModel.underGroundFloor.value)
         appPreferences.underGroundHeight =  MathUtils.parseFloat(mainViewModel.underGroundHeight.value)
     }
+    private fun showToast() {
+        Toast.makeText(requireActivity(), getString(R.string.setting_completed), Toast.LENGTH_SHORT).show()
+    }
     private fun startFloorFragment() {
         val fragment = FloorFragment()
         val fragmentManager = requireActivity().supportFragmentManager
+        fragmentManager.popBackStack()
         fragmentManager.commit {
             addToBackStack(null)
             setReorderingAllowed(true)

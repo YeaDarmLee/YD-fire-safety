@@ -17,12 +17,12 @@ fun FTAppBar(name: String) {
 }
 
 @Composable
-fun FTAppBarBack(name: String) {
+fun FTAppBarBack(name: String, onClick: () -> Unit) {
     TopAppBar(
         elevation = 4.dp,
         title = { Text(text = name) },
         navigationIcon = {
-            IconButton(onClick = {/* Do Something*/ }) {
+            IconButton(onClick = onClick) {
                 Icon(Icons.Filled.ArrowBack, null)
             }
         }

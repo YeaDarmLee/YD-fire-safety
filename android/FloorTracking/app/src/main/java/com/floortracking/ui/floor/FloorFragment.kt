@@ -65,6 +65,9 @@ class FloorFragment: BaseFragment() {
                             floorText = "${viewModel.currentFloor.value}F",
                             hpaText = "${mainViewModel.seaLevel.value}",
                             meterText = "${viewModel.altitude.value.toInt()}",
+                            onBackClick = {
+                                requireActivity().onBackPressed()
+                            },
                             settingAlignAction = {
                             //    calAltitude()
                                 //showDialog.value = true

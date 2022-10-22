@@ -20,10 +20,11 @@ fun RegistrationUI(titleName: String, labelText: String, placeHolderText: String
                    middleHeightValue: MutableLiveData<String>,
                    underGroundFloorValue: MutableLiveData<String>,
                    underGroundHeightValue: MutableLiveData<String>,
+                   onBackClick: () -> Unit,
                    settingAlignAction:  () -> Unit) {
     Scaffold() {
         Column {
-            FTAppBar(name = titleName)
+            FTAppBarBack(name = titleName, onClick = onBackClick)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -29,4 +29,6 @@
     <string name="gps_request_permissions_alert">앱을 실행하려면 위치 접근 권한이 필요합니다.\n위치 설정을 수정하시겠습니까?</string>
     <string name="confirmation">확인</string>
     <string name="cancel">취소</string>
+
+    <string name="setting_completed">설정이 완료 되었습니다.</string>
 </resources>

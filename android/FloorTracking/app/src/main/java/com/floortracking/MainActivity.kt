@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,29 +47,34 @@ class MainActivity : BaseActivity() {
         5000                                     // 다른 앱에서 위치를 갱신했을 때 그 정보를 가져오는 시간 <밀리초 기준>
 
     private val mainViewModel: MainViewModel by viewModels()
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("test", "onCreate()")
         initLocation()
         setContentView(
             ComposeView(this).apply {
-                setContent {
-                    FloorTrackingTheme {
-                        // A surface container using the 'background' color from the theme
-                        Surface(
-                            modifier = Modifier.fillMaxSize(),
-                            color = MaterialTheme.colors.background
-                        )
-                        {
-                            Log.d("test", "asfdsfafsasfd")
-                            AndroidViewBinding(ContentMainBinding::inflate) {
-                                //     appBarFragment()
-                                Log.d("test", "initFragment")
-                                initFragment()
-                            }
-                        }
 
+                setContent {
+                    CompositionLocalProvider(
+                        //  LocalBackPressedDispatcher provides this@NavActivity.onBackPressedDispatcher
+                    ) {
+                        FloorTrackingTheme {
+                            // A surface container using the 'background' color from the theme
+                       //     Surface(
+                       //         modifier = Modifier.fillMaxSize(),
+                       //         color = MaterialTheme.colors.background
+                       //     )
+                     //       {
+                                Log.d("test", "asfdsfafsasfd")
+                                AndroidViewBinding(ContentMainBinding::inflate) {
+                                    //     appBarFragment()
+                                    Log.d("test", "initFragment")
+                                    initFragment()
+                                }
+                       //     }
+
+                        }
                     }
                 }
             }
@@ -77,26 +83,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initFragment() {
-        Log.d("toint","${(0.1).roundToInt()}")
-        Log.d("toint","${(0.2).roundToInt()}")
-        Log.d("toint","${(0.3).roundToInt()}")
-        Log.d("toint","${(0.4).roundToInt()}")
-        Log.d("toint","${(0.5).roundToInt()}")
-        Log.d("toint","${(0.6).roundToInt()}")
-        Log.d("toint","${(0.7).roundToInt()}")
-        Log.d("toint","${(0.8).roundToInt()}")
-        Log.d("toint","${(0.9).roundToInt()}")
-        Log.d("toint","${(-0.1).roundToInt()}")
-        Log.d("toint","${(-0.2).roundToInt()}")
-        Log.d("toint","${(-0.3).roundToInt()}")
-        Log.d("toint","${(-0.4).roundToInt()}")
-        Log.d("toint","${(-0.5).roundToInt()}")
-        Log.d("toint","${(-0.6).roundToInt()}")
-        Log.d("toint","${(-0.7).roundToInt()}")
-        Log.d("toint","${(-0.8).roundToInt()}")
-        Log.d("toint","${(-0.9).roundToInt()}")
-        Log.d("toint","${(-1.0).roundToInt()}")
-
         val fragment = MainFragment()
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit()

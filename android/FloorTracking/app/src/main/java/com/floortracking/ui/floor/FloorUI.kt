@@ -21,10 +21,10 @@ import com.floortracking.ui.components.CommonText
 import com.floortracking.ui.components.FTAppBarBack
 
 @Composable
-fun FloorUI(titleName: String, floorText: String, hpaText: String, meterText: String, settingAlignAction:  () -> Unit) {
+fun FloorUI(titleName: String, floorText: String, hpaText: String, meterText: String, onBackClick: () -> Unit, settingAlignAction:  () -> Unit) {
     Scaffold() {
         Column {
-            FTAppBarBack(name = titleName)
+            FTAppBarBack(name = titleName, onClick = onBackClick)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
