@@ -64,7 +64,7 @@ class FloorFragment: BaseFragment() {
                         FloorUI(titleName = getString(R.string.floor_info_modify),
                             floorText = "${viewModel.currentFloor.value}F",
                             hpaText = "${mainViewModel.seaLevel.value}",
-                            meterText = "${viewModel.altitude.value.toInt()}",
+                            meterText = String.format("%.2f", viewModel.altitude.value),
                             onBackClick = {
                                 requireActivity().onBackPressed()
                             },
