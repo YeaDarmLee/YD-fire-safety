@@ -1,25 +1,16 @@
 package com.floortracking.ui.floor
 
-import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.floortracking.R
-import com.floortracking.api.ApiResponse
 import com.floortracking.ui.base.BaseFragment
 import com.floortracking.ui.theme.FloorTrackingTheme
 import com.floortracking.util.AppPreferences
@@ -27,11 +18,9 @@ import com.floortracking.util.MathUtils
 import com.floortracking.viewmodel.FloorViewModel
 import com.floortracking.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.pow
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint

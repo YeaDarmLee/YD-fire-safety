@@ -1,5 +1,6 @@
 package com.directionfinding.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,7 +22,7 @@ fun DFCircle(sizeRate: Float = 1f, color: Color = Color.Black, image: Painter? =
             .layout() { measurable, constraints ->
                 // Measure the composable
                 val placeable = measurable.measure(constraints)
-
+                Log.d("placeable", "${placeable.width}, ${placeable.height}")
                 //get the current max dimension to assign width=height
                 val currentHeight = placeable.height
                 val currentWidth = placeable.width
@@ -39,6 +40,5 @@ fun DFCircle(sizeRate: Float = 1f, color: Color = Color.Black, image: Painter? =
         image?.run {
             Image(this, "")
         }
-
     }
 }

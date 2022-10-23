@@ -13,8 +13,9 @@ import com.directionfinding.base.BaseFragment
 import com.directionfinding.ui.components.OneButtonPopup
 import com.directionfinding.ui.directionmap.DirectionmapFragment
 import com.directionfinding.ui.theme.DirectionFindingTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainFragment : BaseFragment() {
 
     private val showDialog = mutableStateOf(false)
