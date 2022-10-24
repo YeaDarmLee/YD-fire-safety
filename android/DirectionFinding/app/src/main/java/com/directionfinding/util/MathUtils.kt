@@ -58,7 +58,7 @@ object MathUtils {
         return (distance * 1000).toInt()
 
     }
-    fun calRescuerPosition(width: Int, height: Int, distance: Int, degree: Double = 30.0): Point {
+    fun calRescuerPosition(width: Int, height: Int, distance: Int, degree: Double = 0.0): Point {
         val maxLength = 5000
         val radians = degree * Math.PI / 180
         val y = (height * distance) / maxLength
