@@ -37,7 +37,6 @@ class MainFragment : Fragment(), SensorEventListener {
     lateinit var appPreferences: AppPreferences
 
     private val showDialog = mutableStateOf(false)
-    private val titleText = mutableStateOf("테스트합니다")
 
     private val mainViewModel: MainViewModel by activityViewModels()
 
@@ -46,7 +45,6 @@ class MainFragment : Fragment(), SensorEventListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("test", "onCreateView")
         initSettings()
         requestSeaLevel()
         initPressure()
@@ -109,7 +107,6 @@ class MainFragment : Fragment(), SensorEventListener {
         mainViewModel.underGroundHeight.value = appPreferences.underGroundHeight.toString()
     }
     private fun requestSeaLevel() {
-       // Log.d("test" , "${it.value}")
         mainViewModel.viewModelScope.launch(Dispatchers.IO) {
             mainViewModel.requestSeaLevel(mainViewModel.location.value?.latitude?.toFloat()?:37.566f, mainViewModel.location.value?.longitude?.toFloat()?:126.97f).collect {
                 if (it is ApiResponse.Success) {
@@ -126,15 +123,12 @@ class MainFragment : Fragment(), SensorEventListener {
             sensorManager.registerListener(this@MainFragment, this, SensorManager.SENSOR_DELAY_UI)
         }
     }
-    var test = false
-    override fun onSensorChanged(event: SensorEvent) {
-    //    if (test == false) {
-           Log.d("pressure", "${event.values[0]}")
-    //   }
-     //   test = true
-        mainViewModel.pressure.value = event.values[0]
 
+    override fun onSensorChanged(event: SensorEvent) {
+        Log.d("pressure", "${event.values[0]}")
+        mainViewModel.pressure.value = event.values[0]
     }
+
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }

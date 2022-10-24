@@ -103,8 +103,7 @@ class AppPreferences(
 
     fun isValidData() : Boolean {
         if (alignAltitude == -9999f || groundFloor <= 0 || groundHeight <= 0.0f ||
-            middleFloor <= 0 || middleHeight <= 0.0f ||
-            underGroundFloor <= 0 || underGroundHeight <= 0.0f)
+            middleFloor <= 0 || middleHeight <= 0.0f)
             return false
         return true
     }

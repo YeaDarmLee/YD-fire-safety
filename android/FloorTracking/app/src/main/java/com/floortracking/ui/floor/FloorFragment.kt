@@ -90,7 +90,10 @@ class FloorFragment: BaseFragment() {
             //    viewModel.floorHeight.value?.run {
                     val diffHeight = altitude - (viewModel.alignAltitude.value?: 0f)
 
-                    if (diffHeight < 0) {
+                val isUnderGround = ((diffHeight < 0 && ((viewModel.underGroundHeight.value
+                    ?: 0f) > 0f) && ((viewModel.underGroundFloor.value ?: 0) > 0)))
+
+                    if (isUnderGround) {
                         viewModel.underGroundHeight.value?.run {
                             val floor = (diffHeight / this).roundToInt()
                             if (floor < 0) {
@@ -101,7 +104,6 @@ class FloorFragment: BaseFragment() {
                         }
 
                     } else {
-
                         val middleTotalHeight = (viewModel.middleHeight.value?:0f) * (viewModel.middleFloor.value?:0)
                         if (diffHeight > middleTotalHeight) {
                             viewModel.groundHeight.value?.run {
@@ -114,13 +116,7 @@ class FloorFragment: BaseFragment() {
                         }
 
                     }
-            //        viewModel.currentFloor.value = 1 + (diffHeight / this).toInt()
-            //    }
             }
         }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
     }
 }
