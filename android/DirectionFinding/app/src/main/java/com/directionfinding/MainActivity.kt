@@ -13,12 +13,19 @@ import com.directionfinding.base.BaseActivity
 import com.directionfinding.databinding.ContentMainBinding
 import com.directionfinding.ui.main.MainFragment
 import com.directionfinding.ui.theme.DirectionFindingTheme
+import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             DirectionFindingTheme {
                 // A surface container using the 'background' color from the theme

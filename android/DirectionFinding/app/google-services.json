@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "636958608035",
+    "project_id": "direction-23648",
+    "storage_bucket": "direction-23648.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636958608035:android:2be1e746a642596953cd16",
+        "android_client_info": {
+          "package_name": "com.directionfinding"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "636958608035-ng6p1stno09jdi0hsj905r5kec599oen.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASVWmwD0k_9JISNT52JuZbTIpxBNyk8ZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "636958608035-ng6p1stno09jdi0hsj905r5kec599oen.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
