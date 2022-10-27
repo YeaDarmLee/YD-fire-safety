@@ -43,7 +43,7 @@ class MainFragment : BaseFragment() {
                                 startDirectionFindingFragment()
                             },
                             settingAlignAction = {
-                                throw RuntimeException("Test Crash") // Force a crash
+                           //     throw RuntimeException("Test Crash") // Force a crash
                        //         startRegistrationFragment()
                             })
                     }

@@ -23,4 +23,6 @@ class FloorViewModel @Inject constructor(): ViewModel() {
     val underGroundFloor = MutableLiveData(0)
     val underGroundHeight = MutableLiveData(0f)
 
+    val totalGroundFloor = MutableLiveData(0)
+
 }

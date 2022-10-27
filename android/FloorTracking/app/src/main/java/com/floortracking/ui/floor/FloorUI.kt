@@ -64,7 +64,7 @@ fun FloorUI(titleName: String, floorText: String, hpaText: String, meterText: St
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                CommonButton(text = stringResource(id = R.string.refresh), onClickAction = settingAlignAction)
+             //   CommonButton(text = stringResource(id = R.string.refresh), onClickAction = settingAlignAction)
             }
 
         }

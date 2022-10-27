@@ -24,7 +24,7 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
-class FloorFragment: BaseFragment() {
+class FloorFragment : BaseFragment() {
 
     @Inject
     lateinit var appPreferences: AppPreferences
@@ -47,7 +47,7 @@ class FloorFragment: BaseFragment() {
             )
             setContent {
                 CompositionLocalProvider(
-                   // LocalBackPressedDispatcher provides requireActivity().onBackPressedDispatcher
+                    // LocalBackPressedDispatcher provides requireActivity().onBackPressedDispatcher
                 ) {
                     FloorTrackingTheme {
                         FloorUI(titleName = getString(R.string.floor_info_modify),
@@ -58,7 +58,7 @@ class FloorFragment: BaseFragment() {
                                 requireActivity().onBackPressed()
                             },
                             settingAlignAction = {
-                            //    calAltitude()
+                                //    calAltitude()
                                 //showDialog.value = true
                                 //titleText.value = "호잇 둘리는 초능력 내친구"
 
@@ -68,6 +68,7 @@ class FloorFragment: BaseFragment() {
             }
         }
     }
+
     private fun initData() {
         viewModel.floorHeight.value = appPreferences.groundHeight
         viewModel.alignAltitude.value = appPreferences.alignAltitude
@@ -79,44 +80,78 @@ class FloorFragment: BaseFragment() {
         viewModel.underGroundFloor.value = appPreferences.underGroundFloor
         viewModel.underGroundHeight.value = appPreferences.underGroundHeight
 
+        viewModel.totalGroundFloor.value = appPreferences.groundFloor + appPreferences.middleFloor
+
     }
+
     private fun altitudeLaunch() {
         lifecycleScope.launch {
             while (true) {
                 delay(1000)
-                val altitude = MathUtils.calAltitude(mainViewModel.seaLevel.value.toFloat(), mainViewModel.pressure.value)
-                viewModel.altitude.value =  altitude
-                Log.d("altitude", "${viewModel.altitude.value}, ${viewModel.altitude.value.toInt()}")
-            //    viewModel.floorHeight.value?.run {
-                    val diffHeight = altitude - (viewModel.alignAltitude.value?: 0f)
+                val altitude = MathUtils.calAltitude(
+                    mainViewModel.seaLevel.value.toFloat(),
+                    mainViewModel.pressure.value
+                )
+                viewModel.altitude.value = altitude
+                Log.d(
+                    "altitude",
+                    "${viewModel.altitude.value}, ${viewModel.altitude.value.toInt()}"
+                )
+                val diffHeight = altitude - (viewModel.alignAltitude.value ?: 0f)
 
                 val isUnderGround = ((diffHeight < 0 && ((viewModel.underGroundHeight.value
                     ?: 0f) > 0f) && ((viewModel.underGroundFloor.value ?: 0) > 0)))
 
-                    if (isUnderGround) {
-                        viewModel.underGroundHeight.value?.run {
-                            val floor = (diffHeight / this).roundToInt()
-                            if (floor < 0) {
-                                viewModel.currentFloor.value =  floor
+                if (isUnderGround) {
+                    viewModel.underGroundHeight.value?.run {
+                        val floor = (diffHeight / this).roundToInt()
+                        if (floor < 0) {
+                            viewModel.currentFloor.value = floor
+                        } else {
+                            viewModel.currentFloor.value = 1 + floor
+                        }
+                    }
+
+                } else {
+                    if (isValidMiddle()) {
+                        val middleTotalHeight =
+                            (viewModel.middleHeight.value ?: 0f) * (viewModel.middleFloor.value
+                                ?: 0)
+                        if (diffHeight > middleTotalHeight) {
+                            viewModel.groundHeight.value?.run {
+                                viewModel.currentFloor.value = (viewModel.middleFloor.value
+                                    ?: 0) + (((diffHeight - middleTotalHeight) / this).roundToInt())
+                            }
+                        } else {
+
+                            if (middleTotalHeight > 0) {
+                                viewModel.middleHeight.value?.run {
+                                    viewModel.currentFloor.value =
+                                        1 + (diffHeight / this).roundToInt()
+                                }
                             } else {
-                                viewModel.currentFloor.value = 1 + floor
+                                viewModel.currentFloor.value = 1
                             }
                         }
 
                     } else {
-                        val middleTotalHeight = (viewModel.middleHeight.value?:0f) * (viewModel.middleFloor.value?:0)
-                        if (diffHeight > middleTotalHeight) {
-                            viewModel.groundHeight.value?.run {
-                                viewModel.currentFloor.value = (viewModel.middleFloor.value?:0) + (((diffHeight - middleTotalHeight) / this).roundToInt())
-                            }
-                        } else {
-                            viewModel.middleHeight.value?.run {
-                                viewModel.currentFloor.value = 1 + (diffHeight / this).roundToInt()
-                            }
+                        viewModel.groundHeight.value?.run {
+                            viewModel.currentFloor.value = 1 + ((diffHeight / this).roundToInt())
                         }
-
                     }
+                }
+                if (viewModel.currentFloor.value > (viewModel.totalGroundFloor.value ?: 0)) {
+                    viewModel.currentFloor.value = viewModel.totalGroundFloor.value ?: 0
+                }
+
             }
         }
+    }
+
+    private fun isValidMiddle(): Boolean {
+        if ((viewModel.middleHeight.value ?: 0f) < 1f || (viewModel.middleFloor.value ?: 0) < 1) {
+            return false
+        }
+        return true
     }
 }
